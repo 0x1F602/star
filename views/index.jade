@@ -1,0 +1,11 @@
+extends layout 
+block content 
+    form#login(method="post",action="/login")
+        input(type="text",name="username",value="",placeholder="Username")
+        input(type="password",name="password",value="",placeholder="Password")
+        input(type="submit",name="submit",value="Login")
+    hr
+    form#register(method="post",action="/register")
+        input(type="text",name="username",value="",placeholder="Username")
+        input(type="password",name="password",value="",placeholder="Password")
+        input(type="submit",name="submit",value="Register")

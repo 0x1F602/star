@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS users (
+    username TEXT UNIQUE ON CONFLICT FAIL NOT NULL,
+    salt TEXT,
+    password TEXT NOT NULL ON CONFLICT FAIL,
+    admin INTEGER
+);

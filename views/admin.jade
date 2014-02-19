@@ -1,0 +1,23 @@
+extends layout 
+block js_includes
+    script(src='/js/admin.js')
+block content 
+    h1 Welcome, admin #{username}
+    h2 Current list of users
+    #users
+        ul
+           for o in users
+               li #{o.username} [admin? #{o.admin}]
+    h2 Current list of characters
+        ul
+        for o in characters
+            li #{o.charactername}  
+    h2 Current list of races
+    #races
+        ul
+        for o in races
+            li #{o.race}
+        fieldset
+            input#race_name(type='text',name='race_name',placeholder='Race Name')
+            textarea#zod(name='race_description',placeholder='Description')
+            button#submit_race Submit
