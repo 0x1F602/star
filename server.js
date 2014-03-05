@@ -51,6 +51,10 @@ function Model() {
         return crypto.createHmac('sha1', salt).update(password).digest('hex');
     };
 
+    var connect_to_gcal = function () {
+
+    };
+
     return {
         add_user: add_user,
         get_user: get_user,

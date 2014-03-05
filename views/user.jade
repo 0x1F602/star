@@ -1,3 +1,13 @@
 extends layout 
+block js_includes
+    script(type=javascript,src="/js/user.js")
+    script(type=javascript,src="https://apis.google.com/js/client.js?onload=handleClientLoad")
 block content 
     h1 Welcome to STARK
+    <!--Add a button for the user to click to initiate auth sequence -->
+    | <button id="authorize-button" style="visibility: hidden">Authorize</button>
+    | <button id="add_new_event">Add New Event</button>
+    div#create_event_container
+       form#create_event_form
+        input#start_datetime(type="datetime-local")  
+    | <iframe id='gcal_frame' src="https://www.google.com/calendar/embed?showTitle=0&amp;mode=AGENDA&amp;height=600&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=short.term.amnesia.reminder%40gmail.com&amp;color=%23182C57&amp;ctz=America%2FNew_York" style=" border-width:0 " width="800" height="600" frameborder="0" scrolling="no"></iframe>
