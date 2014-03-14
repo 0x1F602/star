@@ -1,7 +1,5 @@
 var clientId = '859759004572-auh9dpbm5o5lgo1439udju1ddi9lmudp';
 
-//var apiKey = 'AIzaSyB4S3px4qstdZy7OUCixjdaTmqy5_fGsLo';
-
 var scopes = 'https://www.googleapis.com/auth/calendar';
 
 function handleClientLoad() {
@@ -31,46 +29,61 @@ function handleAuthClick(event) {
  return false;
 }
 
+function sendFile(file) {
+    if (file != '') {
+        var uri = "/upload";
+        var xhr = new XMLHttpRequest();
+        var fd = new FormData();
+        
+        xhr.open("POST", uri, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                // Handle response.
+                alert(xhr.responseText); // handle response.
+            }
+        };
+        fd.append('video', file);
+        // Initiate a multipart/form-data upload
+        xhr.send(fd);
+    }
+}
+
+
 // Load the API and make an API call.  Display the results on the screen.
 function makeApiCall() {
+    // setup form for setting start and end datetime
  // Step 4: Load the Google+ API
- gapi.client.load('calendar', 'v3', function () {
-        var calendar_identifier = 'short.term.amnesia.reminder@gmail.com';
-        var start_datetime = new Date();
-        var end_datetime = new Date(start_datetime);
-        end_datetime.setHours(start_datetime.getHours() + 3); 
-        $("button#add_new_event").click(function () {
-            var request = gapi.client.calendar.events.insert({
-                calendarId: calendar_identifier,
-                'resource': { 
-                    'start': {
-                       'dateTime': start_datetime.toISOString()
-                    },
-                    'end': {
-                       'dateTime': end_datetime.toISOString()
+     gapi.client.load('calendar', 'v3', function () {
+            var calendar_identifier = 'short.term.amnesia.reminder@gmail.com';
+            $("button#add_new_event").click(function () {
+                var summary = $("#event_title").val();
+                var start_datestring = $("#start_date").val() + "T" + $("#start_hours").val() + ":" + $("#start_minutes").val() + ":00.000-04:00";
+                var end_datestring = $("#end_date").val() + "T" + $("#end_hours").val() + ":" + $("#end_minutes").val() + ":00.000-04:00";
+                var start_datetime = new Date(start_datestring);
+                var end_datetime = new Date(end_datestring);
+                var request = gapi.client.calendar.events.insert({
+                    calendarId: calendar_identifier,
+                    'resource': {
+                        'summary': summary,
+                        'start': {
+                           'dateTime': start_datetime.toISOString()
+                        },
+                        'end': {
+                           'dateTime': end_datetime.toISOString()
+                        }
                     }
-                }
-            });  
-            request.execute(function (res) {
-                var iframe = document.getElementById('gcal_frame');
-                iframe.src = iframe.src; // refresh
+                });  
+                request.execute(function (res) {
+                    var iframe = document.getElementById('gcal_frame');
+                    iframe.src = iframe.src; // refresh
+                });
             });
-        });
- });
- //gapi.client.load('plus', 'v1', function() {
- //  // Step 5: Assemble the API request
- //  var request = gapi.client.plus.people.get({
- //    'userId': 'me'
- //  });
- //  // Step 6: Execute the API request
- //  request.execute(function(resp) {
- //    var heading = document.createElement('h4');
- //    var image = document.createElement('img');
- //    image.src = resp.image.url;
- //    heading.appendChild(image);
- //    heading.appendChild(document.createTextNode(resp.displayName));
-
- //    document.getElementById('content').appendChild(heading);
- //  });
- //});
+     });
 }
+
+$(document).ready(function () {
+    $("button#video_submit").click(function (e) {
+        e.preventDefault();
+        sendFile($("input#video_file").get(0).files[0]);
+    });
+});

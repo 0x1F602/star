@@ -136,6 +136,11 @@ app.get('/user', ensureAuthenticated, function (req, res) {
     });
 });
 
+app.post('/upload', ensureAuthenticated, function (req, res) {
+    console.log("Inside upload");
+    console.log(req.files);
+});
+
 function ensureAuthenticated (req, res, next) {
     if (req.session.passport.user) {
         console.log("Authenticated user " + req.session.passport.user.username);
