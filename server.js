@@ -108,7 +108,7 @@ app.use(express.session({
 
 app.use(passport.initialize());
 app.post('/login', passport.authenticate('local', {
-    successRedirect: '/user',
+    successRedirect: '/patient',
     failureRedirect: '/?failed=1'
 }));
 
