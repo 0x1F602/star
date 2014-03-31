@@ -54,6 +54,7 @@ function makeApiCall() {
  // Step 4: Load the Google+ API
      gapi.client.load('calendar', 'v3', function () {
             var calendar_identifier = 'short.term.amnesia.reminder@gmail.com';
+            var finished_tasks_identifier = 'e3q8p8d89p8412rua87td57po0@group.calendar.google.com';
             var latest_event_identifier = '';
             
             function get_latest_event() {
@@ -88,12 +89,14 @@ function makeApiCall() {
             get_latest_event();
             // setup click handler here for completed etc
             $("button#completed").click(function () {
-                console.log(calendar_identifier);
                 if (latest_event_identifier != '') {
-                    var request = gapi.client.calendar.events.delete({
-                        calendarId: 'short.term.amnesia.reminder@gmail.com',
-                        eventId: latest_event_identifier
-                    });
+                    var req_body = {
+                        calendarId: calendar_identifier,
+                        eventId: latest_event_identifier,
+                        destination: finished_tasks_identifier
+                    };
+                    console.log(req_body);
+                    var request = gapi.client.calendar.events.move(req_body);
                     request.execute(function (res) {
                         $("#latest_event").hide();
                         get_latest_event(); 
