@@ -1,0 +1,10 @@
+extends layout 
+block js_includes
+    script(type=javascript,src="/js/nav.js")
+    script(type=javascript,src="/js/report.js")
+    script(type=javascript,src="https://apis.google.com/js/client.js?onload=handleClientLoad")
+block content 
+    h1 Welcome to STARK
+    include includes/admin_nav.jade
+    <!--Add a button for the user to click to initiate auth sequence -->
+    | <button id="authorize-button" style="visibility: hidden">Authorize</button>

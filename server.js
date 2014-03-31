@@ -140,6 +140,10 @@ app.get('/patient', ensureAuthenticated, function (req, res) {
     res.render('patient');
 });
 
+app.get('/reports', ensureAuthenticated, function (req, res) {
+    res.render('reports');
+});
+
 app.post('/upload', ensureAuthenticated, function (req, res) {
     console.log("Inside upload");
     console.log(req.files);

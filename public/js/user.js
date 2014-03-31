@@ -82,6 +82,7 @@ function makeApiCall() {
 }
 
 $(document).ready(function () {
+    initialize_nav("button#nurse");
     $("button#video_submit").click(function (e) {
         e.preventDefault();
         sendFile($("input#video_file").get(0).files[0]);
