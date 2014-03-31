@@ -92,3 +92,18 @@ a:hover
     {
     text-decoration: none;
     }
+
+input#start_date, input#start_hours, input#start_minutes,
+input#end_date, input#end_hours, input#end_minutes {
+    width: 150px;
+}
+
+#latest_event {
+    display: hidden;
+}
+
+#latest_event #video {
+    height: 250px;
+    width: 250px;
+    background-color: gray;
+}
