@@ -73,11 +73,16 @@ function makeApiCall() {
                     if (events) {
                         var start = new Date(events[0].start.dateTime);
                         var end = new Date(events[0].end.dateTime);
-                        console.log(events);
                         latest_event_identifier = events[0].id;
                         $("h1#current_title").html(events[0].summary);
                         $("h2#start_time").html("Start " + start.toLocaleTimeString("en-US"));
                         $("h2#end_time").html("End " + end.toLocaleTimeString("en-US"));
+                        $.ajax({
+                            url: '/user/video/' + latest_event_identifier,
+                            success: function (data) {
+                                $("#latest_event video").attr('src', data);
+                            }
+                        });
                         $("#latest_event").show();
                     }
                     else {

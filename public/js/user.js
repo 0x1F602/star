@@ -29,9 +29,9 @@ function handleAuthClick(event) {
  return false;
 }
 
-function sendFile(file) {
+function sendFile(file, eventID) {
     if (file != '') {
-        var uri = "/upload";
+        var uri = "/user/video/" + eventID;
         var xhr = new XMLHttpRequest();
         var fd = new FormData();
         
@@ -39,7 +39,7 @@ function sendFile(file) {
         xhr.onreadystatechange = function() {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 // Handle response.
-                alert(xhr.responseText); // handle response.
+                //alert(xhr.responseText); // handle response.
             }
         };
         fd.append('video', file);
@@ -47,7 +47,6 @@ function sendFile(file) {
         xhr.send(fd);
     }
 }
-
 
 // Load the API and make an API call.  Display the results on the screen.
 function makeApiCall() {
@@ -74,6 +73,11 @@ function makeApiCall() {
                     }
                 });  
                 request.execute(function (res) {
+                    console.log(res);
+                    var eventID = res.id;
+                    if ($("input#video_file").get(0).files[0] && eventID != null) {
+                        sendFile($("input#video_file").get(0).files[0],eventID);
+                    }
                     var iframe = document.getElementById('gcal_frame');
                     iframe.src = iframe.src; // refresh
                 });
@@ -83,8 +87,4 @@ function makeApiCall() {
 
 $(document).ready(function () {
     initialize_nav("button#nurse");
-    $("button#video_submit").click(function (e) {
-        e.preventDefault();
-        sendFile($("input#video_file").get(0).files[0]);
-    });
 });

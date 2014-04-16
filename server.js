@@ -12,10 +12,15 @@ function Model() {
         console.log("Running init_tables");
         var filez = require('fs');
         // Get our schema files and run them on the sqlite3 database
-        var data = filez.readFileSync('./schema/users.sql', { encoding: 'utf-8' });
-        sql.run(data, function (err) {
-            console.log(err);
-        });
+        var schema_files = filez.readdirSync('./schema/');
+        for (var i = 0; i < schema_files.length; i++) {
+            if (schema_files[i].match(/.sql$/)) {
+                var data = filez.readFileSync('./schema/' + schema_files[i], { encoding: 'utf-8' });
+                sql.run(data, function (err) {
+                    console.log(err);
+                });
+            }
+        }
     };
 
     var sql = new sqlite3.Database('stark.sqlite3', init_tables);
@@ -55,10 +60,26 @@ function Model() {
 
     };
 
+    var add_video = function (event_id, video_file, done) {
+        // copy the file to the public video directory
+        console.log(event_id, video_file);
+        var sql_query = 'INSERT INTO events (event_id, video_file) VALUES (?, ?)';
+        // insert the file path and the event id to the database
+        sql.run(sql_query, [event_id, video_file], done);
+    };
+    
+    var get_video = function (event_id, done) {
+        console.log(event_id);
+        var sql_query = 'SELECT * FROM events WHERE event_id = ?';
+        sql.get(sql_query, [event_id], done);
+    };
+
     return {
         add_user: add_user,
         get_user: get_user,
         make_hash: make_hash,
+        add_video: add_video,
+        get_video: get_video,
         sql: sql
     };
 };
@@ -114,6 +135,34 @@ app.post('/login', passport.authenticate('local', {
 
 /* END EXPRESS.JS SETUP */
 
+/* UTILITY FUNCTIONS */
+
+function copyFile(source, target, cb) {
+  var cbCalled = false;
+
+  var rd = fs.createReadStream(source);
+  rd.on("error", function(err) {
+    done(err);
+  });
+  var wr = fs.createWriteStream(target);
+  wr.on("error", function(err) {
+    done(err);
+  });
+  wr.on("close", function(ex) {
+    done();
+  });
+  rd.pipe(wr);
+
+  function done(err) {
+    if (!cbCalled) {
+      cb(err);
+      cbCalled = true;
+    }
+  }
+}
+
+/* END UTILITY FUNCTIONS */
+
 app.post('/register', function (req, res) {
     var username = req.body.username;
     var password = req.body.password;
@@ -144,9 +193,48 @@ app.get('/reports', ensureAuthenticated, function (req, res) {
     res.render('reports');
 });
 
-app.post('/upload', ensureAuthenticated, function (req, res) {
-    console.log("Inside upload");
-    console.log(req.files);
+
+app.get('/user/video/:eventid', ensureAuthenticated, function (req, res) {
+    // retrieve the file path in the public video directory from the database using the event id
+    var event_id = req.params.eventid;
+    model.get_video(event_id, function (err, row) {
+        var default_video = '/video/x.mp4';
+        if (row != undefined) {
+            res.send(row.video_file);
+        }
+        else {
+            res.send(default_video); 
+        }
+    });
+});
+
+
+app.post('/user/video/:eventid', ensureAuthenticated, function (req, res) {
+    if (req.files.video != undefined) {
+        // from here we need to get the file and the event ID
+        var tmp_file_path = req.files.video.path;
+        var event_id = req.params.eventid;
+
+        var filez = require('fs');
+        var path = require('path');
+
+        var tmp_extension = path.extname(tmp_file_path);
+        var perm_path = '/video/' + event_id + tmp_extension;
+
+        var rd = filez.createReadStream(tmp_file_path);
+        var wr = filez.createWriteStream('./public' + perm_path);
+
+        rd.pipe(wr);
+        model.add_video(event_id, perm_path, function (err) {
+            console.log(err);
+            res.send('');
+        }); 
+    }
+    else {
+        model.add_video(event_id, undefined, function (err) {
+            res.send('');
+        });
+    }
 });
 
 function ensureAuthenticated (req, res, next) {
