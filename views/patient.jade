@@ -3,19 +3,18 @@ block js_includes
     script(type=javascript,src="/js/patient.js")
     script(type=javascript,src="https://apis.google.com/js/client.js?onload=handleClientLoad")
 block content 
-    h1 Welcome to STARK
-    h4#current_time Current time: Loading...
     <!--Add a button for the user to click to initiate auth sequence -->
     | <button id="authorize-button" style="visibility: hidden">Authorize</button>
+    h4#current_time Current time: Loading...
     h3#alerts
     #latest_event
         h1#current_title Title
-        h2#start_time Start Time
-        h2#end_time End Time
+        h3#start_time Start Time
+        h3#end_time End Time
         video(controls, autoplay) 
-            source(src="",type="video/mp4")
+            source(src="",type="video/mp4",width="800",height="450")
         br
         button#completed Completed
         button#remind Remind Me
-    button#explain Explain This Device
-    button#help Call For Help
+		button#explain Explain This Device
+		button#help Call For Help
