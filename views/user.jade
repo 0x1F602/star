@@ -9,25 +9,24 @@ block content
     <!--Add a button for the user to click to initiate auth sequence -->
     | <button id="authorize-button" style="visibility: hidden">Authorize</button>
     div#create_event_container
-		form#create_event_form
-            fieldset 
-				h3 Create new event
-                label Summary
-                input#event_title(type='text')
-                hr
-                label Start Time
-                input#start_date(placeholder='YYYY-MM-DD')
-                input#start_hours(type="text",placeholder='Hours') 
-                input#start_minutes(type="text",placeholder='Minutes') 
-                hr
-                label End Time
-                input#end_date(placeholder='YYYY-MM-DD')
-                input#end_hours(type="text",placeholder='Hours') 
-                input#end_minutes(type="text",placeholder='Minutes') 
-                hr
-                label Video File
-                input#video_file(type='file')
-                button#video_submit Upload
-                
-		| <button id="add_new_event">Add Event</button>
+    form#create_event_form
+        fieldset 
+            h3 Create new event
+                    label Summary
+                    input#event_title(type='text')
+                    hr
+                    label Start Time
+                    input#start_date(placeholder='YYYY-MM-DD')
+                    input#start_hours(type="text",placeholder='Hours') 
+                    input#start_minutes(type="text",placeholder='Minutes') 
+                    hr
+                    label End Time
+                    input#end_date(placeholder='YYYY-MM-DD')
+                    input#end_hours(type="text",placeholder='Hours') 
+                    input#end_minutes(type="text",placeholder='Minutes') 
+                    hr
+                    label Video File
+                    input#video_file(type='file')
+                    button#video_submit Upload
+    | <button id="add_new_event">Add Event</button>
     | <iframe id='gcal_frame' src="https://www.google.com/calendar/embed?showTitle=0&amp;mode=AGENDA&amp;height=600&amp;wkst=1&amp;bgcolor=%23EEEEEE&amp;src=short.term.amnesia.reminder%40gmail.com&amp;color=%235577AA&amp;ctz=America%2FNew_York" style=" border-width:0 " width="800" height="600" frameborder="0" scrolling="no"></iframe>
