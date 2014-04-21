@@ -21,6 +21,11 @@ h3
     color: #57A;
     border-bottom: 1px solid #57A;
     }
+	
+h4
+	{
+	color: #57A;
+	}
 
 img
     {
@@ -39,7 +44,22 @@ a:hover
     background: #CCC;
     }
 
-.main
+fieldset
+	{
+	border: 0;
+	padding: 0;
+	padding-bottom: 5px;
+	}
+	
+hr
+	{
+	border: 0;
+	color: #57A;
+	background-color: #57A;
+	height: 1px;
+	}
+
+#main
     {
     margin: auto;
     width: 800px;
@@ -49,61 +69,87 @@ a:hover
     background: #EEE;
     }
   
-.header
+#header
     {
     margin: 0;
     padding: 10px 0;
     color: #EEE;
     background-color: #57A;
-    background-image: url("headerbg.png");
+    background-image: url("/headerbg.png");
     background-position: center right;
     background-repeat: no-repeat;
-    }
-  
+    } 
  
-.header p
+#header p
     {
     margin: 10px;
     }
- 
 
-.navigation
+#navigation
     {
     background: #EEE;
     padding: 0;
     font-weight: 600;
     }
 
-.navigation a
+#navigation a
     {
     padding: 0 15px;
     text-decoration: none;
     }
 
-.footer
+#footer
     {
+	clear: both;
     color: #57A;
     font-size: 75%;
     text-align: center;
     border-top: 1px solid #57A;
     }
-    
-.footer a
+   
+#footer a
     {
     text-decoration: none;
     }
 
 input#start_date, input#start_hours, input#start_minutes,
-input#end_date, input#end_hours, input#end_minutes {
+input#end_date, input#end_hours, input#end_minutes
+	{
     width: 150px;
-}
+	}
 
-#latest_event {
+#latest_event
+	{
     display: hidden;
-}
+	}
 
-#latest_event #video {
+#latest_event #video
+	{
     height: 250px;
     width: 250px;
-    background-color: gray;
-}
+    background-color: #57A;
+	}
+
+#alerts, #current_time
+	{
+	margin-bottom: 0;
+	}
+	
+#alerts
+	{
+	border: 0;
+	}
+
+#current_title
+	{
+	margin: 2px 0;
+	padding-left: 10px;
+	background-color: #57A;
+	color: #EEE;
+	}
+
+#latest_event h3
+	{
+	margin: 2px 0;
+	padding-left: 10px;
+	}
