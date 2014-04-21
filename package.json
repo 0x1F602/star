@@ -8,6 +8,7 @@
         "connect-redis": "1.4.x",
         "passport": "*",
         "passport-local": "0.1.x",
+        "passport-google": "*",
         "jade": "*",
         "sqlite3": "*",
         "ws": "*"

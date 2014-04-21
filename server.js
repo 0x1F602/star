@@ -1,6 +1,6 @@
 var express         = require('express'), 
     passport        = require('passport'),
-    LocalStrategy   = require('passport-local').Strategy,
+    GoogleStrategy = require('passport-google').Strategy,
     RedisStore      = require('connect-redis')(express),
     path            = require('path'),
     crypto          = require('crypto'),
@@ -90,12 +90,16 @@ var app = express();
 
 /* PASSPORT.JS SETUP */
 
-passport.use(new LocalStrategy({
-        usernameField: 'username',
-        passwordField: 'password'
+passport.use(new GoogleStrategy({
+        returnURL: 'http://synergyservers.com:3000/auth/google/return',
+        realm: 'http://synergyservers.com:3000/'
     },
-    function(username, password, done) {
-        model.get_user(done, username);
+    function (identifier, profile, done) {
+        var user = {
+            identifier: identifier,
+            profile: profile
+        };
+        done(null, user);
     }
 ));
 
@@ -162,6 +166,13 @@ function copyFile(source, target, cb) {
 }
 
 /* END UTILITY FUNCTIONS */
+
+/* GoogleStrategy ROUTES */
+app.get('/auth/google', passport.authenticate('google'));
+app.get('/auth/google/return', 
+    passport.authenticate('google', { successRedirect: '/user',
+                                        failureRedirect: '/' }));
+/* END GoogleStrategy ROUTES */
 
 app.post('/register', function (req, res) {
     var username = req.body.username;
